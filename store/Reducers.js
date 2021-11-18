@@ -5,17 +5,22 @@ const reducers = (state, action) => {
 		case ACTIONS.NOTIFY:
 			return {
 				...state,
-				notify: action.payload
+				notify: action.payload,
 			}
 		case ACTIONS.AUTH:
 			return {
 				...state,
-				auth: action.payload
+				auth: action.payload,
 			}
-			case ACTIONS.ADD_CART:
+		case ACTIONS.ADD_CART:
 			return {
 				...state,
-				cart: action.payload
+				cart: action.payload,
+			}
+		case ACTIONS.ADD_MODAL:
+			return {
+				...state,
+				modal: action.payload,
 			}
 
 		default:

@@ -77,7 +77,8 @@ function NavBar() {
 					<li className="nav-item">
 						<Link href="/cart">
 							<a className={'nav-link position-relative' + isActive('/cart')}>
-								<box-icon name="cart-alt"></box-icon>
+								<i className="fa fa-shopping-cart" aria-hidden="true"> <span className="ml-1">Cart</span></i>
+
 								<span className="position-absolute"
 											style={{
 												padding: '3px 6px',
