@@ -75,11 +75,6 @@ function NavBar() {
 						</Link>
 					</li>
 					<li className="nav-item">
-						<Link href="/product">
-							<a className={'nav-link' + isActive('/product')}>Product</a>
-						</Link>
-					</li>
-					<li className="nav-item">
 						<Link href="/cart">
 							<a className={'nav-link' + isActive('/cart')}>
 								<box-icon name="cart-alt"></box-icon>
