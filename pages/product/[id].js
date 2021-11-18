@@ -1,10 +1,14 @@
 import Head from 'next/head'
 import { getData } from '../../utils/fetchData'
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useState } from 'react'
+import { DataContext } from '../../store/GlobalState'
+import { addToCart } from '../../store/Actions'
 
 
 const DetailProduct = (props) => {
 	const [product] = useState(props.product)
+	const { state, dispatch } = useContext(DataContext)
+	const { cart } = state
 
 	const [tab, setTab] = useState(0)
 
@@ -16,7 +20,7 @@ const DetailProduct = (props) => {
 	return (
 		<div className="row detail_page">
 			<Head>
-				<title>Detail</title>
+				<title>{product.title}</title>
 			</Head>
 
 			<div className="col-md-6">
@@ -56,7 +60,11 @@ const DetailProduct = (props) => {
 				<div className="my-2 text-justify"
 						 style={{ textIndent: '1.5em' }}>{product.content}</div>
 
-				<button type="button" className="btn btn-dark d-block my-3 px-5">Buy</button>
+				<button type="button" className="btn btn-dark d-block my-3 px-5"
+								disabled={product.inStock === 0 ? true : false}
+								onClick={() => dispatch(addToCart(product, cart))}>
+					Buy
+				</button>
 			</div>
 
 		</div>

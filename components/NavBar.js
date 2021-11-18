@@ -7,7 +7,7 @@ import Cookie from 'js-cookie'
 function NavBar() {
 	const router = useRouter()
 	const { state, dispatch } = useContext(DataContext)
-	const { auth } = state
+	const { auth, cart } = state
 
 	const isActive = r => r === router.pathname ? ' active' : ''
 
@@ -66,7 +66,7 @@ function NavBar() {
 				<span className="navbar-toggler-icon"></span>
 			</button>
 			<div className="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-				<ul className="navbar-nav">
+				<ul className="navbar-nav p-1">
 					<li className="nav-item">
 						<Link href="/">
 							<a className={'nav-link' + isActive('/')}>
@@ -76,8 +76,18 @@ function NavBar() {
 					</li>
 					<li className="nav-item">
 						<Link href="/cart">
-							<a className={'nav-link' + isActive('/cart')}>
+							<a className={'nav-link position-relative' + isActive('/cart')}>
 								<box-icon name="cart-alt"></box-icon>
+								<span className="position-absolute"
+											style={{
+												padding: '3px 6px',
+												background: '#ed143dc2',
+												borderRadius: '50%',
+												top: '-5px',
+												right: '-5px',
+												color: 'white',
+												fontSize: '14px',
+											}}>{cart.length}</span>
 							</a>
 						</Link>
 					</li>
