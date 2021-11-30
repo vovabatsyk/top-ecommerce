@@ -45,3 +45,9 @@ export const deleteItem = (data, id, type) => {
 
 	return ({ type, payload: newDData })
 }
+
+export const updateItem = (data, id, post,type) => {
+	const newDData = data.map(item => (item._id === id ? post: item))
+
+	return ({ type, payload: newDData })
+}

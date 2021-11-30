@@ -2,7 +2,6 @@ import connectDB from '../../../utils/connectDB'
 import Orders from '../../../models/orderModel'
 import auth from '../../../middleware/auth'
 import Products from '../../../models/productModel'
-import orderModel from '../../../models/orderModel'
 
 connectDB()
 
@@ -49,11 +48,13 @@ const createOrder = async (req, res) => {
 		await newOrder.save()
 
 		res.json({
-			msg: 'Payment success! We will contact you to confirm the order.',
+			msg: 'Order success! We will contact you to confirm the order.',
 			newOrder,
 		})
 
 	} catch (err) {
+		if (err.message === 'jwt malformed')
+			return res.status(500).json({ err: 'Log in, please.' })
 		return res.status(500).json({ err: err.message })
 	}
 }
