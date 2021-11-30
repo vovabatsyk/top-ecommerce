@@ -153,24 +153,29 @@ const Profile = () => {
 								<td className="p-2">date</td>
 								<td className="p-2">total</td>
 								<td className="p-2">delivered</td>
-								<td className="p-2">action</td>
+								<td className="p-2">paid</td>
 							</tr>
 							</thead>
 							<tbody>
 							{
 								orders.map(order => (
 									<tr key={order._id}>
-										<td className="p-2">{order._id}</td>
+										<td className="p-2">
+											<Link href={`/order/${order._id}`}>
+												<a>{order._id}</a>
+											</Link>
+										</td>
 										<td className="p-2">{new Date(order.createdAt).toLocaleDateString()}</td>
 										<td className="p-2">${order.total}</td>
 										<td className="p-2">{
 											order.delivered
 												? <i className="fa fa-check text-success"></i>
-												: <i className="fa fa-times text-danger"></i>}</td>
-										<td className="p-2">
-											<Link href={`/order/${order._id}`}>
-												<a>details</a>
-											</Link>
+												: <i className="fa fa-times text-danger"></i>}
+										</td>
+										<td className="p-2">{
+											order.paid
+												? <i className="fa fa-check text-success"></i>
+												: <i className="fa fa-times text-danger"></i>}
 										</td>
 									</tr>
 								))
