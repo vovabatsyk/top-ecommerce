@@ -6,7 +6,6 @@
     margin: 15px auto;
     border: 1px solid #ddd;
     border-radius: 50%;
-    cursor: pointer;
 }
 
 .profile_page .avatar img {
@@ -40,5 +39,9 @@
     width: 100%;
     height: 100%;
     opacity: 0;
+    cursor: pointer;
+}
+
+::-webkit-file-upload-button {
     cursor: pointer;
 }
