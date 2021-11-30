@@ -3,12 +3,18 @@ import { useContext, useEffect, useState } from 'react'
 import { DataContext } from '../store/GlobalState'
 import Link from 'next/link'
 import CartItem from '../components/CartItem'
-import { getData } from '../utils/fetchData'
+import { getData, postData } from '../utils/fetchData'
+import PaypalBtn from './paypalBtn'
 
 const Cart = () => {
-	const [total, setTotal] = useState(0)
 	const { state, dispatch } = useContext(DataContext)
-	const { cart, auth } = state
+	const { cart, auth, orders } = state
+
+	const [total, setTotal] = useState(0)
+	const [address, setAddress] = useState('')
+	const [mobile, setMobile] = useState('')
+	const [payment, setPayment] = useState(false)
+
 
 	useEffect(() => {
 		const getTotal = () => {
@@ -48,6 +54,34 @@ const Cart = () => {
 	if (cart.length === 0) return <img
 		className="image-responsive w-100"
 		src="./empty_cart.jpeg" alt="not empty"/>
+
+	const handlePayment = () => {
+		if (!address || !mobile)
+			return dispatch({ type: 'NOTIFY', payload: { error: 'Please add your address and mobile.' } })
+
+		setPayment(true)
+	}
+
+	const handleBuy = (e) => {
+		e.preventDefault()
+		if (!address || !mobile)
+			return dispatch({ type: 'NOTIFY', payload: { error: 'Please add your address and mobile.' } })
+		postData('order', { address, mobile, cart, total }, auth.token)
+			.then(res => {
+				if (res.err)
+					return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+
+				dispatch({ type: 'ADD_CART', payload: [] })
+
+				const newOrder = {
+					...res.newOrder,
+					user: auth.user
+				}
+				dispatch({ type: 'ADD_ORDERS', payload: [...orders, newOrder] })
+				return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+			})
+	}
+
 	return (
 		<div className="row mx-auto">
 			<Head>
@@ -74,17 +108,38 @@ const Cart = () => {
 
 					<label htmlFor="address">Address</label>
 					<input type="text" name="address" id="address"
-								 className="form-control mb-2"/>
+								 className="form-control mb-2" value={address}
+								 onChange={e => setAddress(e.target.value)}/>
 
 					<label htmlFor="mobile">Mobile</label>
 					<input type="text" name="mobile" id="mobile"
-								 className="form-control mb-2"/>
+								 className="form-control mb-2" value={mobile}
+								 onChange={e => setMobile(e.target.value)}/>
 
 					<h3>Total: <span className="text-danger">{total}</span></h3>
 
-					<Link href={auth.user ? '#' : '/signin'}>
-						<a className="btn btn-dark my-2">Proceed with payment</a>
-					</Link>
+					{
+						payment
+							? <PaypalBtn
+								total={total}
+								address={address}
+								mobile={mobile}
+								state={state}
+								dispatch={dispatch}
+							/>
+							: (
+								<>
+									{/*<Link href={auth.user ? '#!' : '/signin'}>*/}
+									{/*	<a className="btn btn-dark my-2"*/}
+									{/*		 onClick={handlePayment}>*/}
+									{/*		Proceed with payment*/}
+									{/*	</a>*/}
+									{/*</Link>*/}
+									<button className="btn btn-dark my-2" onClick={handleBuy}>Create order</button>
+								</>
+							)
+					}
+
 				</form>
 			</div>
 

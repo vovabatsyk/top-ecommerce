@@ -16,6 +16,7 @@ function NavBar() {
 		localStorage.removeItem('firstLogin')
 		dispatch({ type: 'AUTH', payload: {} })
 		dispatch({ type: 'NOTIFY', payload: { success: 'Logged out!' } })
+		router.push('/')
 	}
 
 	const loggedRouter = () => {
@@ -37,9 +38,12 @@ function NavBar() {
 					{auth.user.name}
 				</a>
 				<div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-					<a className="dropdown-item" href="#">
-						Profile
-					</a>
+					<Link href="/profile">
+						<a className="dropdown-item">
+							Profile
+						</a>
+					</Link>
+
 					<button className="dropdown-item" onClick={handleLogout}>
 						Logout
 					</button>
