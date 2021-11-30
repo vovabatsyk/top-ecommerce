@@ -3,12 +3,12 @@ import { useContext, useEffect, useState } from 'react'
 import { DataContext } from '../store/GlobalState'
 import Link from 'next/link'
 import CartItem from '../components/CartItem'
-import { getData } from '../utils/fetchData'
+import { getData, postData } from '../utils/fetchData'
 import PaypalBtn from './paypalBtn'
 
 const Cart = () => {
 	const { state, dispatch } = useContext(DataContext)
-	const { cart, auth } = state
+	const { cart, auth, orders } = state
 
 	const [total, setTotal] = useState(0)
 	const [address, setAddress] = useState('')
@@ -62,6 +62,26 @@ const Cart = () => {
 		setPayment(true)
 	}
 
+	const handleBuy = (e) => {
+		e.preventDefault()
+		if (!address || !mobile)
+			return dispatch({ type: 'NOTIFY', payload: { error: 'Please add your address and mobile.' } })
+		postData('order', { address, mobile, cart, total }, auth.token)
+			.then(res => {
+				if (res.err)
+					return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+
+				dispatch({ type: 'ADD_CART', payload: [] })
+
+				const newOrder = {
+					...res.newOrder,
+					user: auth.user
+				}
+				dispatch({ type: 'ADD_ORDERS', payload: [...orders, newOrder] })
+				return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+			})
+	}
+
 	return (
 		<div className="row mx-auto">
 			<Head>
@@ -107,12 +127,17 @@ const Cart = () => {
 								state={state}
 								dispatch={dispatch}
 							/>
-							: <Link href={auth.user ? '#!' : '/signin'}>
-								<a className="btn btn-dark my-2"
-									 onClick={handlePayment}>
-									Proceed with payment
-								</a>
-							</Link>
+							: (
+								<>
+									{/*<Link href={auth.user ? '#!' : '/signin'}>*/}
+									{/*	<a className="btn btn-dark my-2"*/}
+									{/*		 onClick={handlePayment}>*/}
+									{/*		Proceed with payment*/}
+									{/*	</a>*/}
+									{/*</Link>*/}
+									<button className="btn btn-dark my-2" onClick={handleBuy}>Create order</button>
+								</>
+							)
 					}
 
 				</form>
