@@ -9,6 +9,8 @@ const orderSchema = new mongoose.Schema({
 		mobile: String,
 		cart: Array,
 		total: Number,
+		paymentId: String,
+		method: String,
 		delivered: {
 			type: Boolean,
 			default: false,
@@ -17,7 +19,7 @@ const orderSchema = new mongoose.Schema({
 			type: Boolean,
 			default: false,
 		},
-	dateOfPayment: Date
+		dateOfPayment: Date,
 	},
 	{
 		timestamps: true,

@@ -17,16 +17,17 @@ const DetailOrder = () => {
 		setOrderDetail(newArr)
 	}, [orders])
 
+	if (!auth.user) return null
 	return (
 		<div className="my-3">
 			<Head>
-				Detail Order
+				<title>Detail Order</title>
 			</Head>
 			<button className="btn btn-dark" onClick={() => router.back()}>
-				<i className="fa fa-long-arrow-left mx-2" aria-hidden='true'></i>
+				<i className="fa fa-long-arrow-left mx-2" aria-hidden="true"></i>
 				Go Back
 			</button>
-			<OrderDetail orderDetail={orderDetail} />
+			<OrderDetail orderDetail={orderDetail} state={state} dispatch={dispatch}/>
 
 		</div>
 	)
