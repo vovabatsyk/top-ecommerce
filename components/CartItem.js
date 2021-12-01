@@ -40,7 +40,7 @@ const CartItem = ({ item, dispatch, cart }) => {
 				<i className="fa  fa-trash text-danger fa-lg" aria-hidden="true" data-toggle="modal" data-target="#exampleModal"
 					 onClick={() => dispatch({
 						 type: 'ADD_MODAL',
-						 payload: { data: cart, id: item._id, title: item.title },
+						 payload: { data: cart, id: item._id, title: item.title, type: 'ADD_CART' },
 					 })}/>
 			</td>
 		</tr>
