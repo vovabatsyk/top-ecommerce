@@ -32,6 +32,7 @@ const Register = () => {
 		const res = await postData('auth/register', userData)
 
 		if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+		router.push('/signin')
 		return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
 	}
 

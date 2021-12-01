@@ -4,6 +4,7 @@ export const ACTIONS = {
 	ADD_CART: 'ADD_CART',
 	ADD_MODAL: 'ADD_MODAL',
 	ADD_ORDERS: 'ADD_ORDERS',
+	ADD_USERS: 'ADD_USERS',
 }
 
 export const addToCart = (product, cart) => {
@@ -46,8 +47,8 @@ export const deleteItem = (data, id, type) => {
 	return ({ type, payload: newDData })
 }
 
-export const updateItem = (data, id, post,type) => {
-	const newDData = data.map(item => (item._id === id ? post: item))
+export const updateItem = (data, id, post, type) => {
+	const newDData = data.map(item => (item._id === id ? post : item))
 
 	return ({ type, payload: newDData })
 }
